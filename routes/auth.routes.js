@@ -10,76 +10,76 @@ const router = Router()
 
 // /api/auth/signup
 router.post(
-    '/signup',
-    [
-        check('email', 'Incorrect email').isEmail(),
-        check('password', 'Minimal length should be 6').isLength({min: 6})
-    ],
-    async (req, res) => {
-        const {email, password} = req.body
+	'/signup',
+	[
+		check('email', 'Incorrect email').isEmail(),
+		check('password', 'Minimal length should be 6').isLength({min: 6,}),
+	],
+	async (req, res) => {
+		const {email, password,} = req.body
 
-        try {
-            const errors = validationResult(req)
+		try {
+			const errors = validationResult(req)
 
-            if (!errors.isEmpty()) {
-                return res.status(400).json({
-                    errors: errors.array(),
-                    message: 'Incorrect data to register'
-                })
-            }
+			if (!errors.isEmpty()) {
+				return res.status(400).json({
+					errors: errors.array(),
+					message: 'Incorrect data to register',
+				})
+			}
 
-            const candidate = await User.findOne({email})
-            if (candidate)
-                return res.status(400).json('User with this email already exists.')
+			const candidate = await User.findOne({email,})
+			if (candidate)
+				return res.status(400).json('User with this email already exists.')
 
-            const hashedPassword = await bcrypt.hash(password, 12)
-            const user = new User({email, password: hashedPassword})
+			const hashedPassword = await bcrypt.hash(password, 12)
+			const user = new User({email, password: hashedPassword,})
 
-            await user.save()
+			await user.save()
 
-            res.status(201).json({message: 'User created.'})
-        } catch (e) {
-            res.status(500).json({message: 'Error in auth.routes'})
-        }
-    }
+			res.status(201).json({message: 'User created.',})
+		} catch (e) {
+			res.status(500).json({message: 'Error in auth.routes',})
+		}
+	}
 )
 
 // /api/auth/signin
 router.post(
-    '/signin',
-    [
-        check('email', 'Please, enter correct email').normalizeEmail().isEmail(),
-        check('password', 'Enter password').exists()
-    ],
-    async (req, res) => {
-        try {
-            const errors = validationResult(req)
-            if (!errors.isEmpty()) {
-                return res.status(400).json({
-                    errors: errors.array(),
-                    message: 'Incorrect data to login'
-                })
-            }
-            const {email, password} = req.body
+	'/signin',
+	[
+		check('email', 'Please, enter correct email').normalizeEmail().isEmail(),
+		check('password', 'Enter password').exists(),
+	],
+	async (req, res) => {
+		try {
+			const errors = validationResult(req)
+			if (!errors.isEmpty()) {
+				return res.status(400).json({
+					errors: errors.array(),
+					message: 'Incorrect data to login',
+				})
+			}
+			const {email, password,} = req.body
 
-            const user = await User.findOne({email})
-            if (!user)
-                return res.status(400).json({message: 'User do not found'})
+			const user = await User.findOne({email,})
+			if (!user)
+				return res.status(400).json({message: 'User do not found',})
 
-            const isMatch = await bcrypt.compare(password, user.password).then(res => res)
-            if (!isMatch)
-                return res.status(400).json({message: 'Incorrect password. Try again.'})
+			const isMatch = await bcrypt.compare(password, user.password)
+			if (!isMatch)
+				return res.status(400).json({message: 'Incorrect password. Try again.',})
 
-            const responseData = {
-                userId: user.id,
-            }
-            const token = jwt.sign(responseData, config.get('jwtSecret'), {expiresIn: '1h'})
+			const responseData = {
+				userId: user.id,
+			}
+			const token = jwt.sign(responseData, config.get('jwtSecret'), {expiresIn: '1h',})
 
-            res.json({token})
-        } catch (e) {
-            res.status(500).json({message: `Error in auth.routes. ${e.message}`})
-        }
-    }
+			res.json({token,})
+		} catch (e) {
+			res.status(500).json({message: `Error in auth.routes. ${e.message}`,})
+		}
+	}
 )
 
 
@@ -141,6 +141,5 @@ router.post(
 // })
 
 /////////////////////////////////////////////////////////////////////////////////////
-// module.exports = router
 
 export const authRouter = router
