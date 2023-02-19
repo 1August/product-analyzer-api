@@ -6,6 +6,7 @@ import { authRouter } from './routes/auth.routes.js'
 import * as bodyParser from 'express'
 import { supermarketRouter } from './routes/supermarket.routes.js'
 import { dataRouter } from './routes/data.routes.js'
+import { checksRouter } from './routes/checks.routes.js'
 const app = express()
 
 app.use(bodyParser.urlencoded({extended: true,}))
@@ -15,6 +16,7 @@ app.use(cors())
 app.use('/api/auth', authRouter)
 app.use('/api/supermarket', supermarketRouter)
 app.use('/api/data', dataRouter)
+app.use('/api/checks', checksRouter)
 
 const PORT  = config.get('port') || 5000
 
