@@ -28,12 +28,12 @@ router.post(
 				})
 			}
 
-			const candidate = await User.findOne({email,})
+			const candidate = await User.findOne({email: email.trim(),})
 			if (candidate)
 				return res.status(400).json('User with this email already exists.')
 
 			const hashedPassword = await bcrypt.hash(password, 12)
-			const user = new User({email, password: hashedPassword,})
+			const user = new User({email: email.trim(), password: hashedPassword,})
 
 			await user.save()
 
@@ -62,7 +62,7 @@ router.post(
 			}
 			const {email, password,} = req.body
 
-			const user = await User.findOne({email,})
+			const user = await User.findOne({email: email.trim(),})
 			if (!user)
 				return res.status(400).json({message: 'User do not found',})
 
