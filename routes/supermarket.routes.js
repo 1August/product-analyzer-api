@@ -6,7 +6,7 @@ const router = Router()
 // api/supermarket/
 router.get('/', async (req, res) => {
 	const name = req.query.supermarket
-	const market = await Supermarket.findOne({ name: name.toLowerCase(), })
+	const market = await Supermarket.findOne({ name, })
 
 	res.json({ market, })
 })
