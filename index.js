@@ -1,24 +1,15 @@
-import express, * as bodyParser from 'express'
+import express from 'express'
 import config from 'config'
-import cors from 'cors'
-import { authRouter } from './routes/auth.routes.js'
-import { supermarketRouter } from './routes/supermarket.routes.js'
-import { dataRouter } from './routes/data.routes.js'
-import { checksRouter } from './routes/checks.routes.js'
 import { mongooseConnect } from './utils/mongoose.utils.js'
+import { configApp } from './config/config.js'
+import { setRoutes } from './routes/routes.js'
 
 const app = express()
 
-app.use(bodyParser.urlencoded({ extended: true, }))
-app.use(express.json({ extended: true, }))
-app.use(cors())
-
-app.use('/api/auth', authRouter)
-app.use('/api/supermarket', supermarketRouter)
-app.use('/api/data', dataRouter)
-app.use('/api/checks', checksRouter)
-
 const PORT = config.get('port') || 5000
+
+configApp(app)
+setRoutes(app)
 
 const start = async () => {
 	try {
