@@ -1,6 +1,5 @@
 {
   "port": 5000,
   "jwtSecret": "some super secret",
-  "mongoUri": "mongodb+srv://ADMIN:Ou1UTmU5uO34wT4p@cluster0.ovw9eyv.mongodb.net/?retryWrites=true&w=majority",
-//  "OPENAI_API_KEY": "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"
+  "mongoUri": "mongodb+srv://ADMIN:Ou1UTmU5uO34wT4p@cluster0.ovw9eyv.mongodb.net/?retryWrites=true&w=majority"
 }
