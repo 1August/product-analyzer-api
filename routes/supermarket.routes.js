@@ -1,4 +1,5 @@
 import { Router } from 'express'
+<<<<<<< Updated upstream
 import { Supermarket } from '../models/Supermarket.js'
 import { Product } from '../models/Product.js'
 import puppeteer from 'puppeteer'
@@ -75,6 +76,7 @@ router.delete('/product', async (req, res) => {
 	res.json({ message: 'Product deleted', })
 })
 
+<<<<<<< Updated upstream
 async function getInnerText(element) {
 	return await (await (
 		await element)
@@ -111,3 +113,30 @@ router.post('/search', async (req, res) => {
 })
 
 export const supermarketRouter = router
+=======
+export const supermarketRouter = router
+=======
+import { magnumRouter } from './supermarket/magnum/magnum.routes.js'
+
+const router = Router()
+
+router.use('/magnum', magnumRouter) // /api/supermarket/magnum
+// router.use('/galmart', galmartRouter) // /api/supermarket/galmart
+// router.use('/small', smallRouter) // /api/supermarket/small
+
+export const supermarketRouter = router
+
+
+
+// // api/supermarket/
+// router.get('/', supermarketGet)
+// router.post('/', supermarketPost)
+// router.delete('/', supermarketDelete)
+//
+// // api/supermarket/product
+// router.get('/product', supermarketProductGet)
+// router.post('/product', supermarketProductPost)
+// router.delete('/product', supermarketProductDelete)
+//
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
