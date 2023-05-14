@@ -1,13 +1,26 @@
-import puppeteer from 'puppeteer'
+import { launch } from 'puppeteer'
+import { KAZAKHTELECOM, TRANSTELECOM } from '../constants/providers.constants.js'
+import { kazakhtelecomScrap } from './scrap/kazakhtelecom.scrap.js'
+import { transtelecomScrap } from './scrap/transtelecom.scrap.js'
 
-export async function getPage(url) {
-	const browser = await puppeteer.launch()
+async function getByAttribute (selector, attribute = 'innerText') {
+	return (await (await selector)?.getProperty(attribute))?.jsonValue()
+}
+
+export const getInnerText = async selector => await getByAttribute(selector)
+export const getHref = async selector => await getByAttribute(selector, 'href')
+export const getSrc = async selector => await getByAttribute(selector, 'src')
+export const getProductId = async selector => await getByAttribute(selector, 'data-product-id')
+
+export async function scrapCheck(name, url) {
+	const browser = await launch()
 	const page = await browser.newPage()
 	await page.goto(url)
 
-	return page
-}
-
-export async function getInnerText(selector) {
-	return await selector.getProperty('innerText').then(text => text.jsonValue())
+	if (name === KAZAKHTELECOM) {
+		return await kazakhtelecomScrap(page)
+	}
+	if (name === TRANSTELECOM) {
+		return await transtelecomScrap(page, url)
+	}
 }
