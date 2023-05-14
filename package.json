@@ -30,7 +30,9 @@
     "express-validator": "^6.14.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.3",
-    "puppeteer": "^19.6.3"
+    "natural": "^6.3.0",
+    "puppeteer": "^19.6.3",
+    "simple-statistics": "^7.8.3"
   },
   "devDependencies": {
     "eslint": "^8.34.0",
