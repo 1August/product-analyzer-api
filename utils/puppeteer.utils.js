@@ -12,7 +12,7 @@ export const getHref = async selector => await getByAttribute(selector, 'href')
 export const getSrc = async selector => await getByAttribute(selector, 'src')
 export const getProductId = async selector => await getByAttribute(selector, 'data-product-id')
 
-export async function scrapCheck(name, url) {
+export async function scrapCheque(name, url) {
 	const browser = await launch()
 	const page = await browser.newPage()
 	await page.goto(url)

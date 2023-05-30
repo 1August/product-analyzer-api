@@ -2,7 +2,7 @@ import { MULTIPLY_CHAR } from '../../constants/constants.js'
 import { getInnerText } from '../puppeteer.utils.js'
 
 export async function transtelecomScrap (page, url) {
-	let checkId
+	let chequeId
 	const productList = []
 	let total = 0
 	let date
@@ -11,7 +11,7 @@ export async function transtelecomScrap (page, url) {
 
 	const Url = new URL(url)
 
-	checkId = Url.searchParams.get('i')
+	chequeId = Url.searchParams.get('i')
 	total = Url.searchParams.get('s')
 	// Format in url: YYYYMMDDTHHMMSS 20221216T152000
 	const unformattedDate = Url.searchParams.get('t')
@@ -36,12 +36,6 @@ export async function transtelecomScrap (page, url) {
 				const productName = text.substring(0, firstNewLine)
 				return productName
 			}))
-
-		// const productId = await (product.$('b')
-		// 	.then(async value => {
-		// 		const productId = await (value.getProperty('innerText').then(id => id.jsonValue()))
-		// 		return productId
-		// 	}))
 
 		const productCost = await (product.$('.ready_ticket__item')
 			.then(async value => {
@@ -89,5 +83,5 @@ export async function transtelecomScrap (page, url) {
 		productList.push(productInfo)
 	}
 
-	return { checkId, productList, total, date, }
+	return { chequeId, productList, total, date, }
 }

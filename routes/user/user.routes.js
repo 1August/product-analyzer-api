@@ -1,11 +1,11 @@
 import { Router } from 'express'
-import { userChecksGet, userIdChecksGet, userPredict } from './user.controller.js'
+import { userChequesGet, userLastChequeGet, userPredict } from './user.controller.js'
 import { authenticateToken } from '../../utils/auth.utils.js'
 
 const router = Router()
 
-router.get('/', authenticateToken, userIdChecksGet) // /api/user/:id/checks
-router.get('/checks', authenticateToken, userChecksGet) // /api/user/checks
+router.get('/cheques', authenticateToken, userChequesGet) // /api/user/cheques
+router.get('/cheques/last', authenticateToken, userLastChequeGet) // /api/user/cheques/last
 router.get('/predict', authenticateToken, userPredict) // /api/user/predict
 
 export const userRouter = router

@@ -1,18 +1,10 @@
 import { Router } from 'express'
-import { getMagnumAllStocks, getMagnumCatalog, sendMagnumEffectiveStocks } from '../../../utils/scrap/magnum.scrap.js'
 import { authenticateToken } from '../../../utils/auth.utils.js'
+import { getMagnumCatalog, sendMagnumEffectiveStocks } from './magnum.controller.js'
 
 const router = Router()
 
-// router.get('/', authenticateToken, getMagnumProducts) // /api/supermarket/magnum/
-
-// /api/supermarket/magnum/catalog
-router.get('/catalog', authenticateToken, getMagnumCatalog)
-
-// /api/supermarket/magnum/stocks
-router.get('/stocks', authenticateToken, getMagnumAllStocks)
-
-// /api/supermarket/magnum/stocks/effective
-router.get('/stocks/effective', authenticateToken, sendMagnumEffectiveStocks)
+router.get('/catalog', authenticateToken, getMagnumCatalog) // /api/supermarket/magnum/catalog
+router.get('/stocks/effective', authenticateToken, sendMagnumEffectiveStocks) // /api/supermarket/magnum/stocks/effective
 
 export const magnumRouter = router

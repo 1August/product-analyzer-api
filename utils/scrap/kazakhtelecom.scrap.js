@@ -1,13 +1,13 @@
 export async function kazakhtelecomScrap (page) {
 	await page.waitForSelector('.ticket-columns.ticket-items')
 
-	const checkId = Number(await page.$eval('.col-md-12.text-center > p > span:nth-of-type(2)', id => id.innerText))
+	const chequeId = Number(await page.$eval('.col-md-12.text-center > p > span:nth-of-type(2)', id => id.innerText))
 	const productList = await page.$$eval('.ticket-columns.ticket-items', products => {
 		return products.reduce((res, product) => {
 			const productInfo = {
 				name: product.querySelector('div:nth-child(2)').innerText,
 				cost: product.querySelector('div:nth-child(4)').innerText.split(',')[0].replace(/\s/g, ''),
-				number: product.querySelector('div:nth-child(5)').innerText,
+				count: product.querySelector('div:nth-child(5)').innerText,
 				overall: product.querySelector('div:nth-child(7)').innerText.split(',')[0].replace(/\s/g, ''),
 			}
 
@@ -34,5 +34,5 @@ export async function kazakhtelecomScrap (page) {
 		}
 	)
 	const date = new Date(...awaitedDate)
-	return { checkId, productList, total, date, }
+	return { chequeId, productList, total, date, }
 }

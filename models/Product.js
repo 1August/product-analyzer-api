@@ -1,9 +1,10 @@
 import {Schema, model} from 'mongoose'
 
-const schema = new Schema({
-	productId: { type: String, required: true, unique: true, }, // got from market API
+const product = new Schema({
 	name: { type: String, required: true, },
-	price: { type: Number, required: true, },
+	cost: { type: Number, required: true, },
+	count: { type: Number, required: true, default: 1,},
+	overall: { type: Number, required: true, },
 })
 
-export const Product = model('Product', schema)
+export const Product = model('Product', product)

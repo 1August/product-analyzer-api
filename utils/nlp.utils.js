@@ -1,32 +1,4 @@
 import natural from 'natural'
-/*
-
-	TODO:
-		Create object
-			{
-				productName: buy date
-			}
-		Categorize products by name with NLP:
-			['Product 1', 'Product 2', 'Product 3', 'Product 4']
-		Make object with name and dates
-			{
-				'Product 1': [date1, date2, date3]
-				'Product 2': [date1, date2]
-				'Product 3': [date1, date2, date3, date4, date5]
-			}
-		Sort by date ascending
-			products.sort((a, b) => a > b)
-		Predict each product date
-			product: [
-				[date1, date2],
-				[date2, date3],
-				[date3, date4],
-				[date4, date5],
-			]
-			const productsWithPrediction = linearRegression(product)
-		Send to front
-			res.json({ data: productsWithPrediction })
- */
 
 export function findCommonProductName(products) {
 	if (products.length === 0) {
@@ -51,16 +23,6 @@ export function findCommonProductName(products) {
 	return lcp.trim()
 }
 
-// export function getCombinations(arr) {
-// 	const result = [[],]
-//
-// 	for (let i = 0; i < arr.length; i++)
-// 		for (let j = 0; j < result.length; j++)
-// 			result.push([...result[j], arr[i],])
-//
-// 	return result.slice(1)
-// }
-
 export function getCombinations(arr) {
 	const combinations = []
 	const n = arr.length
@@ -82,7 +44,7 @@ export function findMostFrequentStrings(strings) {
 	const frequency = {}
 	const tokenizer = new natural.WordTokenizer()
 
-	// считаем частоту встречаемости слов в каждой строке
+	// count frequency of words
 	strings.forEach((str) => {
 		tokenizer.tokenize(str).forEach((word) => {
 			if (word in frequency) {
@@ -93,7 +55,7 @@ export function findMostFrequentStrings(strings) {
 		})
 	})
 
-	// находим самые часто встречаемые слова
+	// find most frequent words
 	let mostFrequent = []
 	let maxFrequency = 0
 	for (let word in frequency) {
@@ -105,7 +67,7 @@ export function findMostFrequentStrings(strings) {
 		}
 	}
 
-	// возвращаем самые часто встречаемые строки
+	// group all most frequent words
 	const result = []
 	strings.forEach((str) => {
 		const words = tokenizer.tokenize(str)
@@ -119,7 +81,7 @@ export function findMostFrequentStrings(strings) {
 }
 
 
-export function getMostFrequencyWord (arr) {
+export function getMostFrequencyWord(arr) {
 	const tokenizer = new natural.WordTokenizer()
 
 	const freqMap = new Map()
@@ -142,4 +104,47 @@ export function getMostFrequencyWord (arr) {
 	}
 
 	return mostFreqWord
+}
+
+
+function longestCommonSubsequence(s1, s2) {
+	const m = s1.length
+	const n = s2.length
+	const lengths = Array.from(Array(m + 1), () => Array(n + 1).fill(0))
+
+	for (let i = 1; i <= m; i++) {
+		for (let j = 1; j <= n; j++) {
+			if (s1[i - 1] === s2[j - 1]) {
+				lengths[i][j] = lengths[i - 1][j - 1] + 1
+			} else {
+				lengths[i][j] = Math.max(lengths[i - 1][j], lengths[i][j - 1])
+			}
+		}
+	}
+
+	let i = m
+	let j = n
+	const commonSubsequence = []
+	while (i > 0 && j > 0) {
+		if (s1[i - 1] === s2[j - 1]) {
+			commonSubsequence.push(s1[i - 1])
+			i--
+			j--
+		} else if (lengths[i - 1][j] > lengths[i][j - 1]) {
+			i--
+		} else {
+			j--
+		}
+	}
+
+	return commonSubsequence.reverse().join('')
+}
+
+export function extractProductNames(receipt) {
+	const productNames = []
+	const combinedReceipt = receipt.join('').toLowerCase()
+	for (const item of receipt) {
+		productNames.push(longestCommonSubsequence(item.toLowerCase(), combinedReceipt))
+	}
+	return productNames
 }

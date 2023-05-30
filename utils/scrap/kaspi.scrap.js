@@ -1,15 +1,14 @@
 import { getInnerText, getSrc } from '../puppeteer.utils.js'
-import { getDigitsFromString } from '../string.js'
-import { launch } from 'puppeteer'
+import { getDigitsFromString, trimBoth } from '../string.utils.js'
+import { browser } from '../../index.js'
 
 export async function scrapKaspiProductPage(url) {
-	const browser = await launch()
 	const page = await browser.newPage()
 	await page.goto(url)
 
 	const id = getDigitsFromString(await getInnerText(await page.$('.item__sku')))
 	const name = await getInnerText(await page.$('.item__heading'))
-	const price = await getInnerText(await page.$('.item__price-once'))
+	const price = getDigitsFromString(await getInnerText(await page.$('.item__price-once')))
 	const imgLink = await getSrc(await page.$('.item__slider-pic'))
 
 	const shortSpecificationsScraped = await page.$$('.short-specifications__text')
@@ -25,7 +24,7 @@ export async function scrapKaspiProductPage(url) {
 			name: await getInnerText(await seller.$('a')),
 			ratingCount: await getInnerText(await seller.$('.rating-count')),
 			deliveryOption: await getInnerText(await seller.$('.sellers-table__delivery-cell-option')),
-			price: await getInnerText(await seller.$('.sellers-table__price-cell-text')),
+			price: trimBoth(getDigitsFromString(await getInnerText(await seller.$('.sellers-table__price-cell-text')))),
 		}
 
 		sellers.push(newSeller)
@@ -41,9 +40,6 @@ export async function scrapKaspiProductPage(url) {
 		sellers,
 	}
 
+	await page.close()
 	return product
-}
-
-export function getKaspiTopProducts () {
-
 }
